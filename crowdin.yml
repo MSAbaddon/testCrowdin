@@ -1,3 +1,0 @@
-files:
-  - source: en/*.*
-    translation: '%original_file_name%.%file_extension%'
