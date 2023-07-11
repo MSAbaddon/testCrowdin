@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.email "action@github.com"
           git config user.name "Github Action"
-          git add src
+          git add de
           git commit -m "test"
 
       - name: Create Pull Request
