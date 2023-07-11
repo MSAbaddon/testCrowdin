@@ -25,6 +25,7 @@ jobs:
         run: |
           mkdir pf2
           cp -R pf2-temp/package.json pf2/package.json
+          rm -rf pf2-temp
     
       - name: create-json
         id: create-json
