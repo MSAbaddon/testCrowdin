@@ -21,12 +21,20 @@ jobs:
           repository: foundryvtt/pf2e
           path: pf2-system
           ref: master
+    
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: "new-json-file.json"
+          json: '{"name":"jsdaniell", "password":"mypass"}'
+          dir: 'de/de'
           
       - name: Update CHANGELOG and Commit Changes
         run: |
           git config user.email "action@github.com"
           git config user.name "Github Action"
-          git add pf2-system
+          git add src
           git commit -m "test"
 
       - name: Create Pull Request
