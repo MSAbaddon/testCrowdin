@@ -23,4 +23,4 @@ jobs:
           ref: master
       
       - name: Update CHANGELOG and Commit Changes
-        run: ls pf2-system/packs
+        run: ls pf2-system/packs/feats
