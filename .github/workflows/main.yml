@@ -21,6 +21,9 @@ jobs:
           repository: foundryvtt/pf2e
           path: pf2-system
           ref: master
+          
+      - name: copy
+        run: cp -R pf2-system/packs/feats pf2
     
       - name: create-json
         id: create-json
@@ -34,7 +37,7 @@ jobs:
         run: |
           git config user.email "action@github.com"
           git config user.name "Github Action"
-          git add de
+          git add pf2
           git commit -m "test"
 
       - name: Create Pull Request
