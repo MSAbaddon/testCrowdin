@@ -1,0 +1,82 @@
+{
+    "compilerOptions": {
+        "target": "es2022",
+        "module": "esnext",
+        "moduleResolution": "node16",
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable"
+        ],
+        "noEmit": true,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "allowImportingTsExtensions": true,
+        "forceConsistentCasingInFileNames": true,
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "dist",
+        "allowUnusedLabels": false,
+        "removeComments": false,
+        "resolveJsonModule": true,
+        "useDefineForClassFields": true,
+        "paths": {
+            "@actor": [
+                "src/module/actor/index.ts"
+            ],
+            "@actor/*": [
+                "src/module/actor/*"
+            ],
+            "@item": [
+                "src/module/item/index.ts"
+            ],
+            "@item/*": [
+                "src/module/item/*"
+            ],
+            "@scene": [
+                "src/module/scene/index.ts"
+            ],
+            "@scene/*": [
+                "src/module/scene/*"
+            ],
+            "@system/*": [
+                "src/module/system/*"
+            ],
+            "@module/*": [
+                "src/module/*"
+            ],
+            "@scripts/*": [
+                "src/scripts/*"
+            ],
+            "@util": [
+                "src/util/index.ts"
+            ],
+            "@util/*": [
+                "src/util/*"
+            ]
+        },
+        "types": [
+            "jest",
+            "jquery",
+            "node",
+            "tooltipster"
+        ],
+        "typeRoots": [
+            "node_modules/@types",
+            "types/foundry"
+        ]
+    },
+    "watchOptions": {
+        "excludeDirectories": [
+            "packs/",
+            "static/packs/"
+        ]
+    }
+}
