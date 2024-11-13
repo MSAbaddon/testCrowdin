@@ -46,6 +46,16 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Create Pull Request
-        id: pr
+        id: create_pr
         run: |
-          gh pr create --title "Automated PR" --body "This PR was created automatically" --base main --head new-feature-branch --merge
+          gh pr create --title "Automated PR" --body "This PR was created automatically" --base main --head new-feature-branch --repo ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge Pull Request
+        if: steps.create_pr.outcome == 'success'
+        run: |
+          PR_NUMBER=$(gh pr list --head new-feature-branch --json number --jq '.[0].number')
+          gh pr merge $PR_NUMBER --merge --repo ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
