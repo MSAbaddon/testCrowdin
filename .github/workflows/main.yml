@@ -36,9 +36,10 @@ jobs:
         run: |
           git config user.email "action@github.com"
           git config user.name "Github Action"
+          git checkout -b new-feature-branch  # Name des neuen Branches
           echo -e "$(cat CURRENT-RELEASE.md)\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
           git add CHANGELOG.md
-          git commit -m "Update Changelog"
+          git commit --allow-empty -m "feat: example commit for PR"
           git push origin new-feature-branch
 
       - name: Authenticate GitHub CLI
