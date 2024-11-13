@@ -1,10 +1,15 @@
-name: main
+name: Relese
 
 on:
   workflow_dispatch:
+    inputs:
+      checks:
+        description: 'Versionsnummern in module.json und CURRENT-RELEASE.md aktualisiert?'
+        required: false
+        type: boolean
 
 jobs:
-  clone:
+  release:
     runs-on: ubuntu-latest
 
     strategy:
@@ -13,42 +18,33 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
-      - name: copy
-        run: |
-          mkdir pf2-temp
-          curl -L -o pf2-temp/archive.tar.gz https://api.github.com/repos/foundryvtt/pf2e/tarball/master
-          tar -xf pf2-temp/archive.tar.gz --strip-components=1 --directory pf2-temp
-          
-      - name: Copy Directory
-        run: |
-          mkdir pf2
-          cp -R pf2-temp/package.json pf2/package.json
-       #rm -rf pf2-temp
-    
-      - name: create-json
-        id: create-json
-        uses: jsdaniell/create-json@v1.2.2
+      - name: Check prerequisites
+        if: inputs.checks == false
+        uses: actions/github-script@v7
         with:
-          name: "new-json-file.json"
-          json: '{"name":"jsdaniell", "password":"mypass"}'
-          dir: 'de/de'
-          
-     # - name: Update CHANGELOG and Commit Changes
-      #  run: |
-      #    git config user.email "action@github.com"
-      #    git config user.name "Github Action"
-      #    git add pf2
-      #    git commit -m "test"
+          script: |
+            core.setFailed('Kein Release erstellt, bitte Modulversionen und CURRENT-RELEASE.md aktualisieren')
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+    
+      - name: Update CHANGELOG and Commit Changes
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "Github Action"
+          echo -e "$(cat CURRENT-RELEASE.md)\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
+          git add CHANGELOG.md
+          git commit -m "Update Changelog"
+          git push origin new-feature-branch
+
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          title: 'Update Changelog'
-          commit-message: 'test'
-          add-paths: pf2
-          branch: test
-          body: |
-            test
+        id: pr
+        run: |
+          gh pr create --title "Automated PR" --body "This PR was created automatically" --base main --head new-feature-branch --merge
